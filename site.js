@@ -47,7 +47,20 @@
     biref: '@inproceedings{dhar2025dual,\n  author    = {Dhar, Niloy Sutra and Paul, Swajan Sitho and Kaysir, Md Rejvi and Islam, Md Jahirul},\n  title     = {{Dual Interrogation Birefringent SPR-Based PCF Biosensor for Cancer Cell Detection}},\n  booktitle = {2025 International Conference on Quantum Photonics, Artificial Intelligence, and Networking (QPAIN)},\n  pages     = {1--6},\n  year      = {2025},\n  doi       = {10.1109/QPAIN66474.2025.11171886}\n}'
   };
   var toast = $('#toast'), toastT;
-  function say(m) { toast.textContent = m; toast.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('on'); }, 2200); }
+  function say(m) { toast.textContent = m; toast.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('on'); }, 3200); }
+  // An email link does nothing when no mail app is set up, so also copy the address.
+  $$('a[href^="mailto:"]').forEach(function (m) {
+    m.addEventListener('click', function () {
+      var addr = m.getAttribute('href').slice(7);
+      function ok() { say('Email copied: ' + addr); }
+      function no() {
+        var b = document.createElement('textarea'), done = false; b.value = addr; document.body.appendChild(b); b.select();
+        try { done = document.execCommand('copy'); } catch (e) {}
+        b.remove(); say((done ? 'Email copied: ' : 'Email: ') + addr);
+      }
+      if (navigator.clipboard) navigator.clipboard.writeText(addr).then(ok, no); else no();
+    });
+  });
   $$('[data-bib]').forEach(function (b) {
     b.addEventListener('click', function () {
       var text = bib[b.dataset.bib];
@@ -341,7 +354,7 @@
     scene(secs.research, 200, function (r) { if (mobile) lens(W * .78, r.top + 46, 78, t); else lens(x0 + L * .78, r.top + 104, 176, t); });
     scene(secs.papers, 200, function (r) { guided(r.top + (mobile ? 44 : 68), t); });
     scene(secs.teaching, 400, function (r) { slits(mobile ? 46 : x0 + 96, r.top + (mobile ? 46 : 345), t); });
-    scene(secs.background, 300, function (r) { if (mobile) michelson(r.top + 36, W * .74, W * .93, r.top + 62, t); else { var c = colsEl.getBoundingClientRect(); michelson(r.top + 64, c.left + c.width / 2, c.right - 10, c.bottom - 6, t); } });
+    scene(secs.background, 300, function (r) { if (mobile) michelson(r.top + 36, W * .74, W * .93, r.top + 62, t); else { var c = colsEl.getBoundingClientRect(); michelson(r.top + 58, c.left + c.width * .8, c.right - 10, r.top + 100, t); } });
     scene(secs.contact, 300, function (r) { if (mobile) prism(W * .3, r.bottom - 60, 40, 0, -1, W, W * 1.4, .16, t); else prism(x0 + L * .62, r.bottom - 84, 70, -.34, -1, W, W, .26, t); });
     ox.globalCompositeOperation = 'source-over';
   }

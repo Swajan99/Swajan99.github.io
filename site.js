@@ -48,10 +48,10 @@
   };
   var toast = $('#toast'), toastT;
   function say(m) { toast.textContent = m; toast.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('on'); }, 3200); }
-  // An email link does nothing when no mail app is set up, so also copy the address.
-  $$('a[href^="mailto:"]').forEach(function (m) {
+  // Email links open a Gmail message. The address is copied too, for people who use other mail.
+  $$('[data-email]').forEach(function (m) {
     m.addEventListener('click', function () {
-      var addr = m.getAttribute('href').slice(7);
+      var addr = m.dataset.email;
       function ok() { say('Email copied: ' + addr); }
       function no() {
         var b = document.createElement('textarea'), done = false; b.value = addr; document.body.appendChild(b); b.select();
@@ -333,6 +333,19 @@
     }
     ox.lineWidth = 1.2; ox.strokeStyle = edge; ox.strokeRect(bx - w, dy, w * 2, mobile ? 9 : 16);
   }
+  // a light wave: the E field (solid) and the B field (dashed) travelling together
+  function wave(y, t) {
+    var amp = mobile ? 13 : 24, k = mobile ? .055 : .032;
+    function draw(scale, rgb, dash) {
+      var g = ox.createLinearGradient(0, 0, OW, 0);
+      [[0, 0], [.2, .75], [.8, .75], [1, 0]].forEach(function (s) { g.addColorStop(s[0], 'rgba(' + rgb + ',' + s[1] + ')'); });
+      ox.beginPath();
+      for (var x = 0; x <= OW; x += 4) { var v = y - Math.sin(x * k - t * 2.2) * amp * scale; if (x) ox.lineTo(x, v); else ox.moveTo(x, v); }
+      ox.setLineDash(dash); ox.lineWidth = 1.8; ox.strokeStyle = g; ox.stroke(); ox.setLineDash([]);
+    }
+    draw(1, dark ? '255,130,210' : '190,20,120', []);
+    draw(-.5, dark ? '130,200,255' : '30,90,190', [7, 6]);
+  }
   var heroEl = $('.hero'), stageEl = $('#stage'), secs = {}, colsEl = $('#background .cols');
   $$('.sec').forEach(function (s) { secs[s.id] = s; });
   function drawOptics(t) {
@@ -355,6 +368,7 @@
     scene(secs.papers, 200, function (r) { guided(r.top + (mobile ? 44 : 68), t); });
     scene(secs.teaching, 400, function (r) { slits(mobile ? 46 : x0 + 96, r.top + (mobile ? 46 : 345), t); });
     scene(secs.background, 300, function (r) { if (mobile) michelson(r.top + 36, W * .74, W * .93, r.top + 62, t); else { var c = colsEl.getBoundingClientRect(); michelson(r.top + 58, c.left + c.width * .8, c.right - 10, r.top + 100, t); } });
+    scene(secs.training, 200, function (r) { wave(r.top + (mobile ? 42 : 66), t); });
     scene(secs.contact, 300, function (r) { if (mobile) prism(W * .3, r.bottom - 60, 40, 0, -1, W, W * 1.4, .16, t); else prism(x0 + L * .62, r.bottom - 84, 70, -.34, -1, W, W, .26, t); });
     ox.globalCompositeOperation = 'source-over';
   }

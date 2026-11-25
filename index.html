@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swajan Sitho Paul</title>
+<meta name="author" content="Swajan Sitho Paul">
+<meta name="description" content="Swajan Sitho Paul, Lecturer in EECE at MIST and M.Sc. student at BUET. Photonic crystal fiber and surface plasmon resonance sensors.">
+<meta property="og:title" content="Swajan Sitho Paul">
+<meta property="og:description" content="Photonic crystal fiber and surface plasmon resonance sensors.">
+<meta property="og:image" content="images/portrait.jpg">
+<link rel="icon" href="images/swajan.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Literata:ital,opsz,wght@0,7..72,400..800;1,7..72,400..700&family=JetBrains+Mono:wght@400..700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>
+  try { document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#about">Skip to content</a>
+<canvas id="optics" aria-hidden="true"></canvas>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="#top">Swajan Sitho Paul</a>
+    <nav id="nav" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#papers">Publications</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#background">Academic Credentials</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="bar-actions">
+      <button id="theme" class="icon-btn" type="button" aria-label="Switch between dark and light theme">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      </button>
+      <button id="menu" class="icon-btn menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <div class="who">
+        <img src="images/swajan.jpg" width="76" height="76" alt="">
+        <p><a href="https://mist.ac.bd/department/electrical_electronic_and_communication_engineering/faculty-members/swajan-sitho-paul">Lecturer, EECE, MIST</a><br>EEE Graduate, KUET<br>M.Sc. student, EEE, BUET</p>
+      </div>
+      <h1>Swajan<br>Sitho Paul</h1>
+      <p class="lede">I am a PhD aspirant and research enthusiast passionate about exploring innovative technologies and advancing research in Optics and Photonics.</p>
+      <div class="cta">
+        <a class="btn solid" href="data/Swajan_Sitho_Paul_CV.pdf">Download CV</a>
+        <a class="btn" href="#papers">View publications</a>
+      </div>
+      <ul class="links">
+        <li><a href="https://scholar.google.com/citations?user=QJZqMsUAAAAJ&amp;hl=en">Google Scholar</a></li>
+        <li><a href="https://www.researchgate.net/profile/Swajan-Sitho-Paul">ResearchGate</a></li>
+        <li><a href="https://orcid.org/0009-0009-6413-4423">ORCID</a></li>
+        <li><a href="https://www.linkedin.com/in/swajanpaul/">LinkedIn</a></li>
+        <li><a href="mailto:swajanpaul99@gmail.com">Email</a></li>
+      </ul>
+    </div>
+
+    <div class="stage" id="stage">
+      <canvas id="fiber" role="img" aria-label="Interactive 3D model of a D-shaped photonic crystal fiber. Light travels through the core and couples to a gold film on the flat side."></canvas>
+      <img class="stage-fallback" src="images/dlc_dshaped_journal.jpg" alt="3D schematic of the D-shaped fiber sensor" hidden>
+      <span class="tag" data-anchor="film">DLC 9 nm, TiO<sub>2</sub> 25 nm, Au 70 nm</span>
+      <span class="tag" data-anchor="core">Core mode</span>
+      <span class="tag" data-anchor="hole">Air holes, r = 2 µm</span>
+      <p class="hint">Drag to rotate</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="bench" aria-labelledby="bench-h">
+      <div class="bench-head">
+        <h2 id="bench-h">Run the sensor</h2>
+        <p>Choose a cell line and sweep the wavelength. At resonance, light leaves the core for the gold film and the loss peaks.</p>
+      </div>
+
+      <div class="bench-body">
+        <div class="bench-controls">
+          <fieldset>
+            <legend>Cell line</legend>
+            <div class="seg" id="cells"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Sample on the film</legend>
+            <div class="seg two" id="sample">
+              <button type="button" data-s="0" aria-pressed="false"><i class="dot cool"></i>Healthy</button>
+              <button type="button" data-s="1" aria-pressed="true"><i class="dot hot"></i>Cancerous</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="plot">
+          <canvas id="spectrum" role="img" aria-label="Confinement loss against wavelength for healthy and cancerous cells"></canvas>
+          <div class="sweep">
+            <button id="play" class="icon-btn" type="button" aria-label="Pause sweep">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path class="p-pause" d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/><path class="p-play" d="M8 5l11 7-11 7z" fill="currentColor"/></svg>
+            </button>
+            <label class="sr" for="lam">Wavelength in micrometres</label>
+            <input id="lam" type="range" min="1.1" max="2.1" step="0.002" value="1.96">
+            <output id="lam-out" for="lam">1.960 µm</output>
+          </div>
+        </div>
+
+        <dl class="reads">
+          <div><dt>Refractive index</dt><dd id="r-n">1.387 to 1.401</dd></div>
+          <div><dt>Peak shift</dt><dd id="r-d">450 nm</dd></div>
+          <div><dt>Sensitivity</dt><dd id="r-s">32,142.86 nm/RIU</dd></div>
+          <div><dt>Resolution</dt><dd id="r-r">3.11 × 10<sup>&minus;6</sup> RIU</dd></div>
+        </dl>
+      </div>
+      <p class="source">Peak wavelengths, sensitivity and resolution from Table II of <a href="https://doi.org/10.1109/JSEN.2025.3609695">Paul et al., IEEE Sensors Journal, 2025</a>. Curve shapes are schematic and film thickness is exaggerated.</p>
+    </section>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="sec" id="about">
+  <div class="wrap about-grid">
+    <figure class="portrait">
+      <img src="images/portrait.jpg" width="880" height="1100" alt="Swajan Sitho Paul, arms folded, smiling">
+    </figure>
+    <div class="prose">
+      <h2>About</h2>
+      <p>I am a graduate in Electrical and Electronic Engineering from Khulna University of Engineering &amp; Technology (KUET), currently serving as a Lecturer in the Department of Electrical, Electronic and Communication Engineering (EECE) at the <a href="https://mist.ac.bd/department/electrical_electronic_and_communication_engineering/faculty-members/swajan-sitho-paul">Military Institute of Science and Technology (MIST)</a> and pursuing my M.Sc. in EEE at Bangladesh University of Engineering and Technology (BUET). I am an enthusiastic researcher and PhD aspirant with a strong passion for academia, teaching, mentoring, and advancing knowledge through meaningful research.</p>
+      <p>My research interests primarily focus on optical fiber sensors, plasmonic sensors, and biosensors, with particular emphasis on photonic crystal fiber-based surface plasmon resonance (SPR) sensors, plasmonic biosensing, nanophotonics, and advanced photonic engineering for sensing applications.</p>
+      <p>My research vision centers on exploring and developing innovative photonic sensing technologies with potential applications in biomedical sensing, environmental monitoring, healthcare, and other emerging technological fields.</p>
+    </div>
+    <div class="news">
+      <h3>News</h3>
+      <ol>
+        <li><time>Oct 2026</time><span>Started my M.Sc. in EEE at BUET.</span></li>
+        <li><time>Apr 2026</time><span>Diamond-shaped dual-core biosensor paper at <em>IEEE QPAIN 2026</em>, Chittagong.</span></li>
+        <li><time>Feb 2026</time><span>Suspended-core fiber sensor paper published in <em>Discover Sensors</em>.</span></li>
+        <li><time>Dec 2025</time><span>First-author paper at <em>IEEE ICTP 2025</em>, Dhaka.</span></li>
+        <li><time>Nov 2025</time><span>Joined MIST as a Lecturer in EECE.</span></li>
+        <li><time>Sep 2025</time><span>First-author paper published in <em>IEEE Sensors Journal</em>.</span></li>
+        <li><time>Sep 2025</time><span>Completed my B.Sc. in EEE at KUET.</span></li>
+        <li><time>Aug 2025</time><span>Birefringent biosensor paper at <em>QPAIN 2025</em>, Rangpur.</span></li>
+      </ol>
+    </div>
+    <div class="seek">
+        <h3>Seeking PhD opportunities</h3><div>
+        <p>I am actively seeking PhD opportunities in Optics and Photonics, with research interests spanning Silicon Photonics, Nonlinear Optics, Biosensors, Nanophotonics, Optical Sensors, and Advanced Semiconductor Devices. I am particularly interested in exploring innovative photonic devices, nanostructured materials, light–matter interactions, and advanced optical sensing technologies, with the goal of contributing to cutting-edge research and technological advancements in photonics and optoelectronics.</p>
+        <p><a href="mailto:swajanpaul99@gmail.com">Write to me</a></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section class="sec" id="research">
+  <div class="wrap">
+    <h2>Research</h2>
+    <div class="themes">
+      <article>
+        <p class="big">32,142.86<small>nm/RIU for MCF-7 cells</small></p>
+        <h3>Cancer cell detection</h3>
+        <p>Malignant cells have a slightly higher refractive index than healthy ones. I design label-free fiber sensors that separate the two for skin, cervical, blood, adrenal and breast cancer lines.</p>
+      </article>
+      <article>
+        <p class="big">150,000<small>nm/RIU, birefringence peak</small></p>
+        <h3>Dual interrogation</h3>
+        <p>Asymmetric fibers can be read twice, from the confinement loss peak and from the lower birefringence peak. Two independent readings of one sample improve selectivity.</p>
+      </article>
+      <article>
+        <p class="big">R² = 0.97<small>predicted against simulated</small></p>
+        <h3>Optimization and prediction</h3>
+        <p>Taguchi orthogonal arrays tune film thickness and fiber geometry together. A regression model then predicts sensitivity without another simulation.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAPERS ============ -->
+<section class="sec" id="papers">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Publications</h2>
+      <div class="filters" id="filters" role="group" aria-label="Filter publications">
+        <button type="button" data-f="all" aria-pressed="true">All 5</button>
+        <button type="button" data-f="journal" aria-pressed="false">Journal 2</button>
+        <button type="button" data-f="conf" aria-pressed="false">Conference 3</button>
+        <button type="button" data-f="first" aria-pressed="false">First author 2</button>
+      </div>
+    </div>
+
+    <div class="papers">
+
+      <article class="paper" data-k="journal first">
+        <div class="model" data-model="dshape"><img src="images/dlc_dshaped_journal.jpg" alt="3D schematic of the D-shaped fiber"></div>
+        <div class="paper-text">
+          <p class="venue"><b>IEEE Sensors Journal</b> 2025 <span class="chip">Q1</span></p>
+          <h3><a href="https://doi.org/10.1109/JSEN.2025.3609695">DLC–TiO<sub>2</sub>–Au-Coated D-Shaped SPR Biosensor for Cancer Cell Detection</a></h3>
+          <p class="authors"><b>Swajan Sitho Paul</b>, Md Jahirul Islam, Niloy Sutra Dhar, Md Rejvi Kaysir</p>
+          <p>A flat-polished fiber with a diamond-like carbon, TiO<sub>2</sub> and gold film that detects six cancer cell types, and works as a general sensor for refractive indices from 1.00 to 1.401.</p>
+          <dl class="nums"><div><dt>MCF-7 sensitivity</dt><dd>32,142.86 nm/RIU</dd></div><div><dt>Peak sensitivity</dt><dd>80,000 nm/RIU</dd></div><div><dt>Resolution</dt><dd>3.11 × 10<sup>&minus;6</sup> RIU</dd></div></dl>
+          <p class="acts"><a href="https://doi.org/10.1109/JSEN.2025.3609695">Paper</a><button type="button" data-bib="jsen">Copy BibTeX</button><span class="cite">vol. 25, no. 21, pp. 39802–39810</span></p>
+        </div>
+      </article>
+
+      <article class="paper" data-k="journal">
+        <div class="model" data-model="scf"><img src="images/scf_taguchi.jpg" alt="3D schematic of the suspended-core fiber"></div>
+        <div class="paper-text">
+          <p class="venue"><b>Discover Sensors</b> 2026 <span class="chip">Open access</span></p>
+          <h3><a href="https://doi.org/10.1007/s44397-026-00045-1">Taguchi-optimized suspended-core fiber SPR sensor with dual-interrogation performance analysis for broad-range RI detection</a></h3>
+          <p class="authors">Niloy Sutra Dhar, Md Rejvi Kaysir, <b>Swajan Sitho Paul</b>, Md Jahirul Islam</p>
+          <p>An elliptical germanium-doped core hangs between four analyte channels. One fiber supports both confinement loss and birefringence readout over refractive indices from 1.00 to 1.44.</p>
+          <dl class="nums"><div><dt>Birefringence peak</dt><dd>150,000 nm/RIU</dd></div><div><dt>Loss peak, x-pol.</dt><dd>120,000 nm/RIU</dd></div><div><dt>Resolution</dt><dd>6.67 × 10<sup>&minus;7</sup> RIU</dd></div></dl>
+          <p class="acts"><a href="https://doi.org/10.1007/s44397-026-00045-1">Paper</a><button type="button" data-bib="scf">Copy BibTeX</button><span class="cite">vol. 2, no. 1, p. 14</span></p>
+        </div>
+      </article>
+
+      <article class="paper" data-k="conf">
+        <div class="model" data-model="diamond"><img src="images/diamond_dualcore.jpg" alt="Cross-section of the diamond-shaped dual-core fiber"></div>
+        <div class="paper-text">
+          <p class="venue"><b>IEEE QPAIN</b> 2026</p>
+          <h3><a href="https://doi.org/10.1109/QPAIN69676.2026.11546462">Highly Sensitive Diamond Shaped Dual Core PCF SPR Biosensor for Multi-Cancer Cells Detection</a></h3>
+          <p class="authors">Tridib Chakrabortty Prapya, <b>Swajan Sitho Paul</b>, Mohammad Shaifur Rahman</p>
+          <p>Leaving selected holes out of a 27-hole lattice forms two diamond-shaped cores. A 30 nm gold coating gives sharp, well separated resonances for six cancer cell types.</p>
+          <dl class="nums"><div><dt>Breast cell lines</dt><dd>30,714.29 nm/RIU</dd></div><div><dt>Figure of merit</dt><dd>415.05 RIU<sup>&minus;1</sup></dd></div><div><dt>Resolution</dt><dd>3.26 × 10<sup>&minus;6</sup> RIU</dd></div></dl>
+          <p class="acts"><a href="https://doi.org/10.1109/QPAIN69676.2026.11546462">Paper</a><button type="button" data-bib="diamond">Copy BibTeX</button><span class="cite">pp. 1–6</span></p>
+        </div>
+      </article>
+
+      <article class="paper" data-k="conf first">
+        <div class="model" data-model="dshape2"><img src="images/taguchi_mlr_ictp.jpg" alt="Cross-section of the DLC-TiO2-Au coated fiber"></div>
+        <div class="paper-text">
+          <p class="venue"><b>IEEE ICTP</b> 2025</p>
+          <h3><a href="https://doi.org/10.1109/ICTP68765.2025.11414939">Taguchi Optimization and MLR-based Performance Prediction of a DLC-TiO<sub>2</sub>-Au coated D-shaped PCF-SPR RI Sensor</a></h3>
+          <p class="authors"><b>Swajan Sitho Paul</b>, Niloy Sutra Dhar, Md Jahirul Islam, Md Rejvi Kaysir</p>
+          <p>A Taguchi L<sub>27</sub> array optimizes five design parameters in 27 simulations. Multiple linear regression then predicts sensitivity for an untested design within 3.82% of simulation.</p>
+          <dl class="nums"><div><dt>Peak sensitivity</dt><dd>80,000 nm/RIU</dd></div><div><dt>Regression fit</dt><dd>R² = 0.97</dd></div><div><dt>Resolution</dt><dd>1.25 × 10<sup>&minus;6</sup> RIU</dd></div></dl>
+          <p class="acts"><a href="https://doi.org/10.1109/ICTP68765.2025.11414939">Paper</a><button type="button" data-bib="ictp">Copy BibTeX</button><span class="cite">pp. 26–30</span></p>
+        </div>
+      </article>
+
+      <article class="paper" data-k="conf">
+        <div class="model" data-model="biref"><img src="images/dual_birefringent.jpg" alt="Cross-section of the birefringent fiber"></div>
+        <div class="paper-text">
+          <p class="venue"><b>QPAIN</b> 2025</p>
+          <h3><a href="https://doi.org/10.1109/QPAIN66474.2025.11171886">Dual Interrogation Birefringent SPR-Based PCF Biosensor for Cancer Cell Detection</a></h3>
+          <p class="authors">Niloy Sutra Dhar, <b>Swajan Sitho Paul</b>, Md Rejvi Kaysir, Md Jahirul Islam</p>
+          <p>A rectangular core and dual-side polishing split x- and y-polarized light, so gold nanowires can be interrogated by loss and by birefringence.</p>
+          <dl class="nums"><div><dt>MCF-7, x-pol.</dt><dd>12,142.85 nm/RIU</dd></div><div><dt>Birefringence peak</dt><dd>10,000 nm/RIU</dd></div><div><dt>Resolution</dt><dd>1.00 × 10<sup>&minus;5</sup> RIU</dd></div></dl>
+          <p class="acts"><a href="https://doi.org/10.1109/QPAIN66474.2025.11171886">Paper</a><button type="button" data-bib="biref">Copy BibTeX</button><span class="cite">pp. 1–6</span></p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEACHING ============ -->
+<section class="sec" id="teaching">
+  <div class="wrap split">
+    <div class="split-head">
+      <h2>Teaching</h2>
+      <p><a href="https://mist.ac.bd/department/electrical_electronic_and_communication_engineering/faculty-members/swajan-sitho-paul">Lecturer, Department of EECE, MIST</a><br>November 2025 to present</p>
+    </div>
+    <ul class="courses">
+      <li><b>EECE 271</b><span>Electrical Machines &amp; Electronics</span></li>
+      <li><b>EECE 206</b><span>Electrical Machines Laboratory</span></li>
+      <li><b>EECE 222</b><span>Electrical Service Design &amp; CAD Laboratory</span></li>
+      <li><b>EECE 262</b><span>Electrical &amp; Electronic Engineering Lab</span></li>
+      <li><b>EECE 270</b><span>Electrical Drives &amp; Instrumentation Sessional</span></li>
+      <li><b>EECE 382</b><span>Marine Electrical &amp; Electronics Sessional</span></li>
+      <li><b>EECE 434</b><span>Microwave Engineering Laboratory</span></li>
+      <li><b>EECE 478</b><span>Power System Protection Laboratory</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ BACKGROUND ============ -->
+<section class="sec" id="background">
+  <div class="wrap">
+    <h2>Academic Credentials</h2>
+    <div class="cols">
+      <div>
+        <h3>Education</h3>
+        <ul class="rows">
+          <li><b>M.Sc. in EEE, BUET</b><time>Oct 2026 to present</time></li>
+          <li><b>B.Sc. in EEE, KUET</b><time>2020 to 2025</time><span>CGPA 3.93/4.00, ranked 3rd of 141. Thesis on a DLC-TiO<sub>2</sub>-Au coated D-shaped PCF biosensor, supervised by <a href="https://www.kuet.ac.bd/eee/jahirul">Prof. Dr. Md. Jahirul Islam</a></span></li>
+          <li><b>HSC (Science), Notre Dame College</b><time>2019</time><span>GPA 5.00/5.00</span></li>
+          <li><b>SSC (Science), St. Gregory’s High School &amp; College</b><time>2017</time><span>GPA 5.00/5.00</span></li>
+        </ul>
+        <h3>Training and Workshops</h3>
+        <ul class="rows">
+          <li><b><a href="https://drive.google.com/file/d/1v8FUNbhef3xVFKo-pymnqD3fdM6ybXPw/view?usp=sharing">Integrated Capacity Development Project in Power Transmission System of Bangladesh, KOREATECH, South Korea</a></b><time>Oct 2024</time><span>A professional training program under Professor Jin Sung Kim on AC/DC transmission, power distribution, and renewable energy (PV systems), with site visits to the Dangjin Power Plant, Seoul Thermal Power Plant, and 765 kV Shinansung Substation.</span></li>
+          <li><b><a href="https://drive.google.com/file/d/1tDpP9zl4Y7WvQz2It3Wnmlc8p72LYk12/view?usp=sharing">Machine Learning with Python, CCC, KUET (EDGE Project)</a></b><time>Dec 2024 to Feb 2025</time><span>An 80-hour professional training on core machine learning techniques and practical applications.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Awards, Achievements, and Extracurricular Activities</h3>
+        <ul class="rows">
+          <li><b>Dean&rsquo;s Award</b><span>Received for four consecutive academic years for maintaining an average GPA above 3.75</span></li>
+          <li><b>Talent Pool Scholarship</b><span>Awarded in PSC, JSC, SSC, and HSC examinations</span></li>
+          <li><b>Vice President</b><span>Served in the Notre Dame College Association of KUET</span></li>
+          <li><b>IEEE Membership</b><time>2025</time></li>
+        </ul>
+        <h3>Projects</h3>
+        <ul class="rows">
+          <li><b><a href="https://drive.google.com/file/d/1rA9-IwF8uSb-dPJL5du_pSrzFUTUff6j/view?usp=sharing">Electrical Wiring and Cost Estimation of a Residential House</a></b><span>Complete wiring layout with load calculations, circuit design, safety considerations, and total cost estimation.</span></li>
+          <li><b><a href="https://drive.google.com/file/d/1fINCnZC-iAHnjMOx8G14xN_5Fmyf_yVc/view?usp=sharing">Closed-Loop Speed Controller for Constant DC Voltage Generation</a></b><span>A closed-loop speed control system for a prime mover, with bidirectional motor control, that maintains constant DC voltage.</span></li>
+          <li><b><a href="https://drive.google.com/file/d/1wwTALbFUqV93U408rLzsG7pgmMV-WFxO/view?usp=sharing">Solar-Powered Wireless Electric Vehicle Charging System</a></b><span>Charges vehicles in motion using solar panels, battery, transformer, regulator circuitry, Atmega controller, and LCD interface.</span></li>
+          <li><b><a href="https://drive.google.com/file/d/1JmFfEBTQjTnr5b15a3KRjfpaCY9SpH6l/view?usp=sharing">Design and Implementation of a 1100 HV / 75 LV Turns Low-Voltage Transformer</a></b><span>Cylindrical-type concentric winding with tape insulation and natural air cooling for a 20 VA load.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="skills">
+      <h3>Technical Skills</h3>
+      <div class="skill-cols">
+        <div>
+          <h4>Programming <span>Language</span></h4>
+          <ul>
+            <li>C</li>
+            <li>C++</li>
+            <li>Verilog</li>
+            <li>VHDL</li>
+            <li>Python</li>
+            <li>MATLAB</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Simulation <span>Tools</span></h4>
+          <ul>
+            <li>COMSOL Multiphysics</li>
+            <li>PSpice</li>
+            <li>Proteus</li>
+            <li>ModelSim</li>
+            <li>Microwind</li>
+            <li>Altera Quartus</li>
+            <li>LOGO! Soft Comfort</li>
+            <li>DSCH2</li>
+            <li>MATLAB Simulink</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Software <span>Proficiency</span></h4>
+          <ul>
+            <li>MS Office (Word, PowerPoint, Excel)</li>
+            <li>OriginLab</li>
+            <li>AutoCAD Electrical</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="sec contact" id="contact">
+  <div class="wrap">
+    <h2>Let&rsquo;s shape the future with photonics.</h2>
+    <p>For PhD openings, collaborations or questions about a paper.</p>
+    <p class="mail"><a href="mailto:swajanpaul99@gmail.com">swajanpaul99@gmail.com</a></p>
+    <ul class="links">
+      <li><a href="https://scholar.google.com/citations?user=QJZqMsUAAAAJ&amp;hl=en">Google Scholar</a></li>
+      <li><a href="https://www.researchgate.net/profile/Swajan-Sitho-Paul">ResearchGate</a></li>
+        <li><a href="https://orcid.org/0009-0009-6413-4423">ORCID</a></li>
+      <li><a href="https://www.linkedin.com/in/swajanpaul/">LinkedIn</a></li>
+      <li><a href="data/Swajan_Sitho_Paul_CV.pdf">CV (PDF)</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">Dhaka, Bangladesh</div></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

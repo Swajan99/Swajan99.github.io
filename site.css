@@ -66,7 +66,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; line-height: 1.08; }
 h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); font-weight: 700; letter-spacing: -.015em; }
 h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
 p { margin: 0 0 1em; }
-a { color: inherit; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: .2em; }
+a { color: var(--cyan); font-weight: 700; text-decoration: none; transition: color .2s; }
 a:hover { color: var(--gold); }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 dl, dd, dt, figure { margin: 0; }
@@ -82,9 +82,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ---------- header ---------- */
 .bar { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--navy) 95%, transparent); backdrop-filter: blur(14px); color: var(--navy-ink); border-bottom: 1px solid var(--navy-line); font-family: var(--display); }
 .bar-in { display: flex; align-items: center; gap: 20px; min-height: 64px; }
-.brand { font-family: var(--body); font-weight: 700; font-size: 1.14rem; text-decoration: none; margin-right: auto; white-space: nowrap; }
+.brand { color: inherit; font-family: var(--body); font-weight: 700; font-size: 1.14rem; text-decoration: none; margin-right: auto; white-space: nowrap; }
 .bar nav { display: flex; gap: 4px; }
-.bar nav a { font-family: var(--body); text-decoration: none; white-space: nowrap; font-size: .98rem; padding: 8px 12px; border-radius: 8px; color: var(--navy-mute); }
+.bar nav a { font-family: var(--body); font-weight: 400; text-decoration: none; white-space: nowrap; font-size: .98rem; padding: 8px 12px; border-radius: 8px; color: var(--navy-mute); }
 .bar nav a:hover, .bar nav a.on { color: #ffc145; }
 .bar a:hover { color: #ffc145; }
 .bar-actions { display: flex; gap: 8px; }
@@ -105,7 +105,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 h1 { font-size: clamp(2.7rem, 5.6vw, 4.75rem); font-weight: 820; font-stretch: 122%; letter-spacing: -.025em; line-height: .98; }
 .lede { font-size: clamp(1.15rem, 1.7vw, 1.38rem); line-height: 1.45; margin: 24px 0 28px; max-width: 30em; }
 .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
-.btn { font-family: var(--display); font-weight: 650; text-decoration: none; padding: 12px 22px; border-radius: 10px; border: 1px solid var(--line); }
+.btn { color: inherit; font-family: var(--display); font-weight: 650; text-decoration: none; padding: 12px 22px; border-radius: 10px; border: 1px solid var(--line); }
 .btn:hover { border-color: var(--gold); }
 .btn.solid { background: var(--gold); border-color: var(--gold); color: #0b1038; }
 .btn.solid:hover { background: #ffd57f; color: #0b1038; }
@@ -212,7 +212,7 @@ legend { margin-bottom: 8px; }
 .nums { display: flex; flex-wrap: wrap; gap: 12px 34px; padding: 14px 0; border-block: 1px solid var(--line); margin-bottom: 14px; }
 .nums dd { font: 600 .95rem/1.4 var(--data); font-variant-numeric: tabular-nums; }
 .paper .acts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin: 0; font: 600 .95rem var(--display); }
-.acts button { background: none; border: 0; padding: 6px 0; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; text-underline-offset: .2em; }
+.acts button { background: none; border: 0; padding: 6px 0; font-weight: 700; color: var(--cyan); }
 .acts button:hover { color: var(--gold); }
 .cite { font-family: var(--data); font-weight: 400; color: var(--mute); font-size: .8rem; }
 
@@ -229,7 +229,6 @@ legend { margin-bottom: 8px; }
 .cols h3 { margin: 26px 0 10px; color: var(--gold); }
 .rows li { align-content: start; display: grid; grid-template-columns: 1fr auto; gap: 0 18px; padding: 11px 0; border-top: 1px solid var(--line); line-height: 1.45; }
 .rows b { font: 700 1.04rem/1.4 var(--body); }
-.rows a, .skills a { text-decoration-thickness: 1px; }
 .rows span { grid-column: 1 / -1; color: var(--mute); font-size: 1rem; }
 .skills { margin-top: 40px; padding-top: 22px; border-top: 2px solid var(--gold); }
 .skills h3 { font-size: 1.5rem; margin-bottom: 14px; color: var(--gold); }

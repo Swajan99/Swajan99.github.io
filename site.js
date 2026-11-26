@@ -138,6 +138,7 @@
     $$('.themes > article').forEach(function (el, i) { mark(el, 'rv-zoom', 100 + i * 150, null, function (a) { countUp($('.big', a)); }); });
     // Publications: cards swing in from alternate sides
     mark($('.filters'), 'rv-right', 120);
+    $$('.stats > div').forEach(function (el, i) { mark(el, 'rv-up', 80 + i * 110, null, function (c) { countUp($('dd', c)); }); });
     $$('.paper').forEach(function (el, i) { mark(el, i % 2 ? 'rv-tilt-r' : 'rv-tilt-l', 60); });
     // Teaching: courses are wiped in like a scan line
     $$('.split-head p').forEach(function (el) { mark(el, 'rv-left', 120); });

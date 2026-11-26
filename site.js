@@ -85,6 +85,95 @@
     });
   }
 
+  /* ================= 1b. reveal on scroll ================= */
+  // Content is visible by default. Only when motion is welcome and the browser can
+  // watch scrolling do items start hidden, each section with its own entrance.
+  if (!calm && 'IntersectionObserver' in window) {
+    root.classList.add('reveal-on');
+    var groups = new Map();
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); playGroup(e.target, true); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .06 });
+    var playGroup = function (t, animate) {
+      (groups.get(t) || []).forEach(function (it) {
+        var el = it.el, tidy = function () { el.classList.remove('rv', 'in', it.kind); el.style.removeProperty('--d'); };
+        if (!animate) { tidy(); return; }
+        el.classList.add('in'); if (it.done) it.done(el);
+        setTimeout(tidy, 1800 + it.d);
+      });
+      groups.delete(t);
+    };
+    // trigger: the element whose arrival starts the effect (needed when the item itself starts fully clipped)
+    var mark = function (el, kind, d, trigger, done) {
+      if (!el || el.dataset.rv) return; el.dataset.rv = 1;
+      el.classList.add('rv', kind); el.style.setProperty('--d', d + 'ms');
+      trigger = trigger || el;
+      if (!groups.has(trigger)) { groups.set(trigger, []); io.observe(trigger); }
+      groups.get(trigger).push({ el: el, kind: kind, d: d, done: done });
+    };
+    var countUp = function (box) {
+      var n = box.firstChild; if (!n || n.nodeType !== 3) return;
+      var full = n.nodeValue, m = full.match(/^(.*?)([\d,]+(?:\.\d+)?)\s*$/); if (!m) return;
+      var goal = parseFloat(m[2].replace(/,/g, '')), dec = (m[2].split('.')[1] || '').length, t0 = performance.now();
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / 1700), e = 1 - Math.pow(1 - k, 3);
+        n.nodeValue = k < 1 ? m[1] + (goal * e).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec }) : full;
+        if (k < 1) requestAnimationFrame(step);
+      })(t0);
+    };
+
+    // Top of the page: a staggered rise, the fiber fades in
+    $$('.hero-text > *').forEach(function (el, i) { mark(el, 'rv-up', 120 + i * 110); });
+    mark($('.stage'), 'rv-fade', 350); mark($('.bench'), 'rv-up', 200);
+    // Section headings come into focus
+    $$('.sec h2, .seek h3, .news h3, .cols h3, .projects h3, .skills h3, .skills h4').forEach(function (el) {
+      if (!el.closest('.contact')) mark(el, 'rv-focus', 0);
+    });
+    // About: the photo opens out, text slides from the left, news from the right
+    mark($('.portrait'), 'rv-unveil', 80);
+    $$('.prose p').forEach(function (el, i) { mark(el, 'rv-left', 120 + i * 100); });
+    $$('.news li').forEach(function (el, i) { mark(el, 'rv-right', 80 + (i % 5) * 80); });
+    $$('.seek p').forEach(function (el, i) { mark(el, 'rv-up', 120 + i * 100); });
+    // Research: highlights zoom in and their numbers count up
+    $$('.themes > article').forEach(function (el, i) { mark(el, 'rv-zoom', 100 + i * 150, null, function (a) { countUp($('.big', a)); }); });
+    // Publications: cards swing in from alternate sides
+    mark($('.filters'), 'rv-right', 120);
+    $$('.paper').forEach(function (el, i) { mark(el, i % 2 ? 'rv-tilt-r' : 'rv-tilt-l', 60); });
+    // Teaching: courses are wiped in like a scan line
+    $$('.split-head p').forEach(function (el) { mark(el, 'rv-left', 120); });
+    var courses = $('.courses');
+    $$('.courses li').forEach(function (el, i) { mark(el, 'rv-wipe', i * 80, courses); });
+    // Academic profile: columns slide in from their own side, projects pop, skills flip down
+    $$('#background .cols > div:first-child .rows li').forEach(function (el, i) { mark(el, 'rv-left', 60 + (i % 4) * 80); });
+    $$('#background .cols > div:last-child .rows li').forEach(function (el, i) { mark(el, 'rv-right', 60 + (i % 4) * 80); });
+    $$('.projects li').forEach(function (el, i) { mark(el, 'rv-zoom', 60 + (i % 4) * 90); });
+    $$('.skill-cols > div').forEach(function (col, c) {
+      $$('li', col).forEach(function (el, i) { mark(el, 'rv-drop', c * 120 + i * 60, col); });
+    });
+    // Training: each entry is wiped in
+    var train = $('#training .rows');
+    $$('#training .rows li').forEach(function (el, i) { mark(el, 'rv-wipe', 100 + i * 200, train); });
+    // Contact: the heading rises word by word
+    var ch = $('.contact h2');
+    if (ch && ch.children.length === 0) {
+      var words = ch.textContent.trim().split(/\s+/); ch.textContent = '';
+      words.forEach(function (w, i) {
+        var s = document.createElement('span'); s.className = 'w'; s.textContent = w; ch.appendChild(s);
+        if (i < words.length - 1) ch.appendChild(document.createTextNode(' '));
+        mark(s, 'rv-word', i * 90, ch);
+      });
+    }
+    $$('.contact p, .contact .links').forEach(function (el, i) { mark(el, 'rv-up', 300 + i * 100); });
+
+    // Anything the reader has already scrolled past (for example after a jump to #papers) shows at once.
+    var sweep = function () {
+      groups.forEach(function (list, t) { if (t.getBoundingClientRect().bottom < 0) { io.unobserve(t); playGroup(t, false); } });
+    }, sweepT;
+    addEventListener('scroll', function () { clearTimeout(sweepT); sweepT = setTimeout(sweep, 150); }, { passive: true });
+    addEventListener('load', function () { sweep(); setTimeout(sweep, 700); setTimeout(sweep, 1600); });
+    addEventListener('beforeprint', function () { root.classList.remove('reveal-on'); });
+  }
+
   /* ================= 2. sensor bench ================= */
   // n, peak wavelength (um), sensitivity, resolution: Table II, IEEE Sensors J. 25(21), 2025.
   // h: relative curve height, used only for drawing.
